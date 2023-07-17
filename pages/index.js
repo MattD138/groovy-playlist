@@ -1,10 +1,7 @@
-import { Flex, Heading } from '@chakra-ui/react'
-import NavBar from './components/Nav/NavBar'
+import GroovyApp from "./components/App/GroovyApp"
 
 export default function Home() {
   return (
-    <Flex height="100vh" width="100vw" bgGradient='linear(to-br, purple.400, purple.700)'>
-      <NavBar />
-    </Flex>
+    <GroovyApp />
   )
 }
