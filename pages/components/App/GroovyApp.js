@@ -18,7 +18,8 @@ export default function GroovyApp() {
       id: 101
     }
   ])
-  const [playlist, setPlaylist] = useState([
+  const [playlistName, setPlaylistName] = useState('New Playlist')
+  const [tracklist, setTracklist] = useState([
     {
       name: 'Rush Over Me',
       artist: 'Seven Lions',
@@ -43,6 +44,10 @@ export default function GroovyApp() {
     console.log(searchOption)
   }
 
+  const handlePlaylistNameChange = (newPlaylistName) => {
+    setPlaylistName(newPlaylistName)
+  }
+
   return (
     <GroovyLayout
       searchText={searchText}
@@ -50,7 +55,9 @@ export default function GroovyApp() {
       searchOption={searchOption}
       handleOptionChange={handleOptionChange}
       searchResults={searchResults}
-      playlist={playlist}
+      playlistName={playlistName}
+      handlePlaylistNameChange={handlePlaylistNameChange}
+      tracklist={tracklist}
     />
   )
 }

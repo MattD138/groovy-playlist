@@ -20,7 +20,11 @@ export default function GroovyLayout(props) {
             <ResultsSection
               searchResults={props.searchResults}
             />
-            <PlaylistSection playlist={props.playlist} />
+            <PlaylistSection
+              playlistName={props.playlistName}
+              handlePlaylistNameChange={props.handlePlaylistNameChange}
+              tracklist={props.tracklist}
+            />
           </Stack>
         </Stack>
       </Container>
