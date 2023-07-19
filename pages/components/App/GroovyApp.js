@@ -18,6 +18,20 @@ export default function GroovyApp() {
       id: 101
     }
   ])
+  const [playlist, setPlaylist] = useState([
+    {
+      name: 'Rush Over Me',
+      artist: 'Seven Lions',
+      album: 'Rush Over Me',
+      id: 102
+    },
+    {
+      name: 'Say Hello',
+      artist: 'MaRLo',
+      album: 'Altitude',
+      id: 103
+    }
+  ])
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value)
@@ -36,6 +50,7 @@ export default function GroovyApp() {
       searchOption={searchOption}
       handleOptionChange={handleOptionChange}
       searchResults={searchResults}
+      playlist={playlist}
     />
   )
 }
