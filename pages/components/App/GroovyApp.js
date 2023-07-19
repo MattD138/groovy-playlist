@@ -57,6 +57,11 @@ export default function GroovyApp() {
     }
   }
 
+  const handleRemoveTrack = (trackToRemove) => {
+    // Remove given track from the tracklist state
+    setTracklist(prev => prev.filter(e => e.id !== trackToRemove.id))
+  }
+
   return (
     <GroovyLayout {
       ...{
@@ -68,7 +73,8 @@ export default function GroovyApp() {
         playlistName,
         handlePlaylistNameChange,
         tracklist,
-        handleAddTrack
+        handleAddTrack,
+        handleRemoveTrack
       }
     } />
   )

@@ -13,7 +13,7 @@ export default function PlaylistSection(props) {
       <Stack>
         {props.tracklist.map(track => (
           <Track
-            actionButton={<RemoveTrackButton track={track} />}
+            actionButton={<RemoveTrackButton track={track} handleRemoveTrack={props.handleRemoveTrack} />}
             name={track.name}
             artist={track.artist}
             album={track.album}
