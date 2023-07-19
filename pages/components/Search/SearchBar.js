@@ -1,6 +1,6 @@
 import { Input } from "@chakra-ui/react";
 
-export default function SearchBar({searchText, handleChange}) {
+export default function SearchBar({ searchText, handleChange }) {
   return (
     <Input
       placeholder='Enter the name of a song, artist, or genre...'
@@ -9,6 +9,7 @@ export default function SearchBar({searchText, handleChange}) {
       size='lg'
       color="gray.50"
       _placeholder={{ color: 'inherit' }}
+      focusBorderColor='orange.500'
     />
   )
 }
