@@ -6,7 +6,7 @@ import PlaylistSection from '../Playlist/PlaylistSection'
 
 export default function GroovyLayout(props) {
   return (
-    <Box height="100vh" width="100vw" bgGradient='linear(to-br, purple.400, purple.700)'>
+    <Box minH='100vh' bgGradient='linear(to-br, purple.400, purple.700)'>
       <NavBar />
       <Container maxW="container.xl" h="100%">
         <Stack direction='column' spacing='4'>
