@@ -6,33 +6,29 @@ export default function GroovyApp() {
   const [searchOption, setSearchOption] = useState('track')
   const [searchResults, setSearchResults] = useState([
     {
-      name: 'Quack Quack',
-      artist: 'Donald Duck',
-      album: 'Best of Donald Duck 1997',
-      id: 100
-    },
-    {
       name: 'Children',
       artist: 'Robert Miles',
-      album: 'Children',
-      id: 101
+      album: 'Children (Dance Vault Remixes)',
+      id: '4wtR6HB3XekEengMX17cpc',
+      uri: 'spotify:track:4wtR6HB3XekEengMX17cpc'
+    },
+    {
+      name: 'Rush Over Me (feat. HALIENE) - Seven Lions 1999 Remix',
+      artist: 'Seven Lions',
+      album: 'Rush Over Me (Seven Lions 1999 Remix)',
+      id: '2pZL9DNKxnPwRk7hQPUvrL',
+      uri: 'spotify:track:2pZL9DNKxnPwRk7hQPUvrL'
+    },
+    {
+      name: 'Say Hello - Darren Porter Radio Edit',
+      artist: 'MaRLo',
+      album: 'Say Hello',
+      id: '0jddySnJ0G958xzJE8OhAN',
+      uri: 'spotify:track:0jddySnJ0G958xzJE8OhAN'
     }
   ])
   const [playlistName, setPlaylistName] = useState('New Playlist')
-  const [tracklist, setTracklist] = useState([
-    {
-      name: 'Rush Over Me',
-      artist: 'Seven Lions',
-      album: 'Rush Over Me',
-      id: 102
-    },
-    {
-      name: 'Say Hello',
-      artist: 'MaRLo',
-      album: 'Altitude',
-      id: 103
-    }
-  ])
+  const [tracklist, setTracklist] = useState([])
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value)
