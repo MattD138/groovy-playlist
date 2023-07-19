@@ -5,11 +5,11 @@ export default function PlaylistHeading({ playlistName, handleChange }) {
     <Heading size="lg" color="gray.50">
       <Editable value={playlistName} onChange={handleChange}>
         <Tooltip label='Click to edit' shouldWrapChildren={true} placement='right' hasArrow>
-          <EditablePreview _hover={{
+          <EditablePreview p='0' _hover={{
             background: 'blackAlpha.500'
           }} />
         </Tooltip>
-        <EditableInput />
+        <EditableInput p='0' />
       </Editable>
     </Heading>
   )
