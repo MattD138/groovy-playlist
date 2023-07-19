@@ -35,9 +35,7 @@ export default function GroovyApp() {
   }
 
   const handleOptionChange = (newOption) => {
-    console.log(newOption)
     setSearchOption(newOption)
-    console.log(searchOption)
   }
 
   const handlePlaylistNameChange = (newPlaylistName) => {
