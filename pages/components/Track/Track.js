@@ -1,7 +1,7 @@
 import { Box, Card, Flex, Heading, IconButton, Stack, Text } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 
-export default function Track({ name, artist, album, id }) {
+export default function Track({ actionButton, name, artist, album }) {
   return (
     <Card p='4'>
       <Flex justifyContent='space-between'>
@@ -9,7 +9,7 @@ export default function Track({ name, artist, album, id }) {
           <Heading size='sm'>{name}</Heading>
           <Text>{artist} | {album}</Text>
         </Box>
-        <IconButton aria-label={`Add ${name} to playlist`} icon={<AddIcon />} />
+        {actionButton}
       </Flex>
     </Card>
   )

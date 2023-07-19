@@ -1,5 +1,6 @@
 import { Button, Heading, Stack } from "@chakra-ui/react"
 import Track from "../Track/Track"
+import RemoveTrackButton from "../Track/RemoveTrackButton"
 
 export default function PlaylistSection({ playlist }) {
   return (
@@ -8,10 +9,10 @@ export default function PlaylistSection({ playlist }) {
       <Stack>
         {playlist.map(track => (
           <Track
+            actionButton={<RemoveTrackButton track={track} />}
             name={track.name}
             artist={track.artist}
             album={track.album}
-            id={track.id}
             key={track.id}
           />
         ))}
