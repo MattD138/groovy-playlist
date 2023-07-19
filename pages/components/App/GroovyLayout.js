@@ -19,6 +19,7 @@ export default function GroovyLayout(props) {
           <Stack direction={['column', 'row']} spacing='4'>
             <ResultsSection
               searchResults={props.searchResults}
+              handleAddTrack={props.handleAddTrack}
             />
             <PlaylistSection
               playlistName={props.playlistName}

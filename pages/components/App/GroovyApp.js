@@ -48,16 +48,28 @@ export default function GroovyApp() {
     setPlaylistName(newPlaylistName)
   }
 
+  const handleAddTrack = (newTrack) => {
+    // Add track if it does not exist in playlist
+    if (tracklist.find(e => e.id === newTrack.id)) {
+      alert('Track already in playlist')
+    } else {
+      setTracklist(prev => [...prev, newTrack])
+    }
+  }
+
   return (
-    <GroovyLayout
-      searchText={searchText}
-      handleSearchChange={handleSearchChange}
-      searchOption={searchOption}
-      handleOptionChange={handleOptionChange}
-      searchResults={searchResults}
-      playlistName={playlistName}
-      handlePlaylistNameChange={handlePlaylistNameChange}
-      tracklist={tracklist}
-    />
+    <GroovyLayout {
+      ...{
+        searchText,
+        handleSearchChange,
+        searchOption,
+        handleOptionChange,
+        searchResults,
+        playlistName,
+        handlePlaylistNameChange,
+        tracklist,
+        handleAddTrack
+      }
+    } />
   )
 }
