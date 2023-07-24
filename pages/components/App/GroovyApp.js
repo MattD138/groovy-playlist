@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import GroovyLayout from "./GroovyLayout"
-import { requestAccessToken } from "@/helpers/spotifyAuth"
+import { requestAccessToken, refreshAccessToken } from "@/helpers/spotifyAuth"
 
 export default function GroovyApp() {
   const [isAuthenticated, setIsAuthenticated] = useState(null) // null if loading
@@ -57,13 +57,23 @@ export default function GroovyApp() {
       }
     }
 
+    async function updateToken() {
+      setIsAuthenticated(null)
+      try {
+        await refreshAccessToken()
+        setIsAuthenticated(true)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
     if (accessToken && secondsUntilExpiry > 0) {
       console.log(`Found valid access token expiring in ${secondsUntilExpiry} seconds`)
       setIsAuthenticated(true)
       // TODO: Set timeout to refresh token when it expires
     } else if (refreshToken) {
       console.log(`Found expired access token, refreshing...`)
-      // TODO: Implement token refresh request
+      updateToken()
     } else if (code) {
       // Use authorization code to request access token
       console.log('Requesting access token')

@@ -59,3 +59,33 @@ export function requestAccessToken(code) {
 
   return response;
 }
+
+export function refreshAccessToken() {
+  let refreshToken = localStorage.getItem('refresh_token');
+
+  let body = new URLSearchParams({
+    grant_type: 'refresh_token',
+    client_id: clientId,
+    refresh_token: refreshToken
+  });
+
+  const response = fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: body
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('HTTP status ' + response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+      const tokenExpiry = new Date().getTime() + 3600 * 1000;
+      localStorage.setItem('access_token', data.access_token)
+      localStorage.setItem('access_token_expiry', tokenExpiry)
+      localStorage.setItem('refresh_token', data.refresh_token)
+    })
+}
