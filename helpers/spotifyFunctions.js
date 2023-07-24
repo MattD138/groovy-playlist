@@ -1,8 +1,6 @@
-const baseUrl = 'https://api.spotify.com/v1/'
+import { prepareAuth } from "./spotifyAuth";
 
 export function search(text, option) {
-  const accessToken = localStorage.getItem('access_token');
-
   const params = new URLSearchParams({
     q: `${option}:${text}`,
     type: 'track',
@@ -10,12 +8,19 @@ export function search(text, option) {
     limit: 20
   });
 
-  const response = fetch('https://api.spotify.com/v1/search?' + params, {
-    method: 'GET',
-    headers: {
-      'Authorization': 'Bearer ' + accessToken
-    }
-  })
+  return prepareAuth()
+    .then(authValid => {
+      if (!authValid) {
+        throw new Error('Auth failed');
+      }
+      const accessToken = localStorage.getItem('access_token');
+      return fetch('https://api.spotify.com/v1/search?' + params, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + accessToken
+        }
+      })
+    })
     .then(response => {
       if (!response.ok) {
         throw new Error('HTTP status ' + response.status);
@@ -31,8 +36,6 @@ export function search(text, option) {
         uri: res.uri
       }))
     })
-
-  return response;
 }
 
 // Writing the playlist to a user's account requires three steps
@@ -40,14 +43,20 @@ export function search(text, option) {
 // 2. Create a new (empty) playlist
 // 3. Add songs to the playlist
 export function savePlaylist(name, tracklist) {
-  const accessToken = localStorage.getItem('access_token');
-
-  return fetch('https://api.spotify.com/v1/me', {
-    method: 'GET',
-    headers: {
-      'Authorization': 'Bearer ' + accessToken
-    }
-  })
+  let accessToken;
+  return prepareAuth()
+    .then(authValid => {
+      if (!authValid) {
+        throw new Error('Auth failed');
+      }
+      accessToken = localStorage.getItem('access_token');
+      return fetch('https://api.spotify.com/v1/me', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + accessToken
+        }
+      })
+    })
     .then(response => {
       if (!response.ok) {
         throw new Error('HTTP status ' + response.status);

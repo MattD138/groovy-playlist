@@ -20,60 +20,33 @@ export default function GroovyApp() {
     const urlParams = new URLSearchParams(window.location.search);
     let code = urlParams.get('code');
 
-    const accessToken = localStorage.getItem('access_token');
-    const refreshToken = localStorage.getItem('refresh_token');
-    const accessTokenExpiry = parseInt(localStorage.getItem('access_token_expiry'));
-    let secondsUntilExpiry = (accessTokenExpiry - new Date().getTime()) / 1000;
-
     async function getToken() {
-      setIsAuthenticated(null)
+      setIsAuthenticated(null);
       try {
-        await requestAccessToken(code)
+        await requestAccessToken(code);
         // If no errors, access_token has been written to local storage
-        setIsAuthenticated(true)
+        setIsAuthenticated(true);
         // Remove Spotify's params from the window location
         window.history.replaceState(null, '', window.location.pathname);
       } catch (err) {
         console.error(err)
+        setIsAuthenticated(false);
       }
     }
 
-    async function renewToken() {
-      setIsAuthenticated(null)
-      try {
-        await refreshAccessToken()
-        setIsAuthenticated(true)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    if (accessToken && secondsUntilExpiry > 0) {
-      console.log(`Found valid access token expiring in ${secondsUntilExpiry} seconds`)
-      setIsAuthenticated(true)
-    } else if (refreshToken) {
-      // Use stored refresh token to refresh access token
-      console.log(`Found expired access token, refreshing...`)
-      renewToken()
-      secondsUntilExpiry = 3600
-    } else if (code) {
-      // Use authorization code to request access token
+    if (code) {
       console.log('Requesting access token')
-      getToken()
-      secondsUntilExpiry = 3600
+      getToken();
     } else {
-      console.log('No local access token found')
-      setIsAuthenticated(false)
+      // Check local auth
+      const accessToken = localStorage.getItem('access_token');
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (accessToken && refreshToken) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
     }
-
-    // Set timeout to renew access token when it expires
-    if (secondsUntilExpiry) {
-      const timer = setTimeout(() => {
-        renewToken()
-      }, secondsUntilExpiry * 1000)
-      return () => clearTimeout(timer)
-    }
-
   }, [])
 
   const handleSearchChange = (e) => {

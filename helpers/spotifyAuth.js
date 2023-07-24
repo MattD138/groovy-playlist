@@ -26,7 +26,7 @@ export function requestAuthCode() {
   })
 }
 
-export function requestAccessToken(code) {
+export async function requestAccessToken(code) {
   let codeVerifier = localStorage.getItem('code_verifier');
 
   let body = new URLSearchParams({
@@ -37,7 +37,7 @@ export function requestAccessToken(code) {
     code_verifier: codeVerifier
   });
 
-  const response = fetch('https://accounts.spotify.com/api/token', {
+  return fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -56,11 +56,9 @@ export function requestAccessToken(code) {
       localStorage.setItem('access_token_expiry', tokenExpiry)
       localStorage.setItem('refresh_token', data.refresh_token)
     })
-
-  return response;
 }
 
-export function refreshAccessToken() {
+export async function refreshAccessToken() {
   let refreshToken = localStorage.getItem('refresh_token');
 
   let body = new URLSearchParams({
@@ -69,7 +67,7 @@ export function refreshAccessToken() {
     refresh_token: refreshToken
   });
 
-  const response = fetch('https://accounts.spotify.com/api/token', {
+  return fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -87,5 +85,26 @@ export function refreshAccessToken() {
       localStorage.setItem('access_token', data.access_token)
       localStorage.setItem('access_token_expiry', tokenExpiry)
       localStorage.setItem('refresh_token', data.refresh_token)
+      console.log('Done refreshing access token')
     })
+}
+
+export async function prepareAuth() {
+  const accessToken = localStorage.getItem('access_token');
+  const refreshToken = localStorage.getItem('refresh_token');
+  const accessTokenExpiry = parseInt(localStorage.getItem('access_token_expiry'));
+  const secondsUntilExpiry = (accessTokenExpiry - new Date().getTime()) / 1000;
+
+  if (accessToken && secondsUntilExpiry > 0) {
+    console.log(`Found valid access token expiring in ${secondsUntilExpiry} seconds`)
+    return true;
+  } else if (refreshToken) {
+    // Use stored refresh token to refresh access token
+    console.log(`Found expired access token, refreshing...`)
+    await refreshAccessToken();
+    return true;
+  } else {
+    console.log('No local access token found')
+    return false;
+  }
 }
