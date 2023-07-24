@@ -1,29 +1,31 @@
 import { useState, useEffect } from "react"
 import GroovyLayout from "./GroovyLayout"
 import { requestAccessToken, refreshAccessToken } from "@/helpers/spotifyAuth"
+import spotifyFunctions from "@/helpers/spotifyFunctions"
 
 export default function GroovyApp() {
   const [isAuthenticated, setIsAuthenticated] = useState(null) // null if loading
   const [searchText, setSearchText] = useState('')
   const [searchOption, setSearchOption] = useState('track')
+  const [isSearchLoading, setIsSearchLoading] = useState(false)
   const [searchResults, setSearchResults] = useState([
     {
       name: 'Children',
-      artist: 'Robert Miles',
+      artists: 'Robert Miles',
       album: 'Children (Dance Vault Remixes)',
       id: '4wtR6HB3XekEengMX17cpc',
       uri: 'spotify:track:4wtR6HB3XekEengMX17cpc'
     },
     {
       name: 'Rush Over Me (feat. HALIENE) - Seven Lions 1999 Remix',
-      artist: 'Seven Lions',
+      artists: 'Seven Lions',
       album: 'Rush Over Me (Seven Lions 1999 Remix)',
       id: '2pZL9DNKxnPwRk7hQPUvrL',
       uri: 'spotify:track:2pZL9DNKxnPwRk7hQPUvrL'
     },
     {
       name: 'Say Hello - Darren Porter Radio Edit',
-      artist: 'MaRLo',
+      artists: 'MaRLo',
       album: 'Say Hello',
       id: '0jddySnJ0G958xzJE8OhAN',
       uri: 'spotify:track:0jddySnJ0G958xzJE8OhAN'
@@ -103,6 +105,18 @@ export default function GroovyApp() {
     setSearchOption(newOption)
   }
 
+  const handleSearch = async () => {
+    setIsSearchLoading(true);
+    try {
+      const results = await spotifyFunctions.search(searchText, searchOption);
+      console.log(results)
+      setSearchResults(results);
+    } catch (err) {
+      console.error(err);
+    }
+    setIsSearchLoading(false)
+  }
+
   const handlePlaylistNameChange = (newPlaylistName) => {
     setPlaylistName(newPlaylistName)
   }
@@ -129,6 +143,7 @@ export default function GroovyApp() {
         handleSearchChange,
         searchOption,
         handleOptionChange,
+        handleSearch,
         searchResults,
         playlistName,
         handlePlaylistNameChange,

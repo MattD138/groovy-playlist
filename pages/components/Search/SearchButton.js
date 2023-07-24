@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 
-export default function SearchButton() {
+export default function SearchButton({ handleClick }) {
   return (
-    <Button>Search</Button>
+    <Button onClick={handleClick}>Search</Button>
   )
 }

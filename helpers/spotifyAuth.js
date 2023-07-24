@@ -1,4 +1,4 @@
-import { generateRandomString, generateCodeChallenge } from './spotifyHelpers'
+import { generateRandomString, generateCodeChallenge } from './spotifyAuthHelpers'
 
 const clientId = '56e3609234e04566a1f1a8cc80910270';
 const redirectUri = 'http://localhost:3000';

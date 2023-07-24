@@ -15,7 +15,7 @@ export default function PlaylistSection(props) {
           <Track
             actionButton={<RemoveTrackButton track={track} handleRemoveTrack={props.handleRemoveTrack} />}
             name={track.name}
-            artist={track.artist}
+            artists={track.artists}
             album={track.album}
             key={track.id}
           />

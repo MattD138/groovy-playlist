@@ -11,7 +11,7 @@ export default function ResultsSection(props) {
           <Track
             actionButton={<AddTrackButton track={track} handleAddTrack={props.handleAddTrack} />}
             name={track.name}
-            artist={track.artist}
+            artists={track.artists}
             album={track.album}
             key={track.id}
           />

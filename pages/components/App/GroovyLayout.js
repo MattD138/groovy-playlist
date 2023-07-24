@@ -18,6 +18,7 @@ export default function GroovyLayout(props) {
               handleSearchChange={props.handleSearchChange}
               searchOption={props.searchOption}
               handleOptionChange={props.handleOptionChange}
+              handleSearch={props.handleSearch}
             />
             <Stack direction={['column', 'row']} spacing='4'>
               <ResultsSection

@@ -16,9 +16,9 @@ export default function SearchSection(props) {
             searchOption={props.searchOption}
             handleChange={props.handleOptionChange}
           />
-          <SearchButton />
+          <SearchButton handleClick={props.handleSearch} />
         </Flex>
-      </Container> 
+      </Container>
     </Box>
   )
 }
