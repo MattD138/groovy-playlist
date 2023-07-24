@@ -10,7 +10,7 @@ export default function GroovyLayout(props) {
   return (
     <Box minH='100vh' bgGradient='linear(to-br, purple.400, purple.700)'>
       <NavBar />
-      <Container maxW="container.xl" h="100%">
+      <Container maxW="container.xl" h="100%" py='4'>
         {props.isAuthenticated ? (
           <Stack direction='column' spacing='4'>
             <SearchSection
