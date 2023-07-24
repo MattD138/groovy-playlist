@@ -23,6 +23,8 @@ export default function PlaylistSection(props) {
       </Stack>
       <Button
         onClick={props.handleSavePlaylist}
+        isLoading={props.isSavingPlaylist}
+        isDisabled={props.tracklist.length === 0}
         colorScheme='orange'
       >Save to Spotify</Button>
     </Stack>

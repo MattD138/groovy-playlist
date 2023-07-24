@@ -33,6 +33,7 @@ export default function GroovyLayout(props) {
                 tracklist={props.tracklist}
                 handleRemoveTrack={props.handleRemoveTrack}
                 handleSavePlaylist={props.handleSavePlaylist}
+                isSavingPlaylist={props.isSavingPlaylist}
               />
             </Stack>
           </Stack>

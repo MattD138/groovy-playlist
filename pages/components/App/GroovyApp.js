@@ -8,29 +8,8 @@ export default function GroovyApp() {
   const [searchText, setSearchText] = useState('')
   const [searchOption, setSearchOption] = useState('track')
   const [isSearchLoading, setIsSearchLoading] = useState(false)
-  const [searchResults, setSearchResults] = useState([
-    {
-      name: 'Children',
-      artists: 'Robert Miles',
-      album: 'Children (Dance Vault Remixes)',
-      id: '4wtR6HB3XekEengMX17cpc',
-      uri: 'spotify:track:4wtR6HB3XekEengMX17cpc'
-    },
-    {
-      name: 'Rush Over Me (feat. HALIENE) - Seven Lions 1999 Remix',
-      artists: 'Seven Lions',
-      album: 'Rush Over Me (Seven Lions 1999 Remix)',
-      id: '2pZL9DNKxnPwRk7hQPUvrL',
-      uri: 'spotify:track:2pZL9DNKxnPwRk7hQPUvrL'
-    },
-    {
-      name: 'Say Hello - Darren Porter Radio Edit',
-      artists: 'MaRLo',
-      album: 'Say Hello',
-      id: '0jddySnJ0G958xzJE8OhAN',
-      uri: 'spotify:track:0jddySnJ0G958xzJE8OhAN'
-    }
-  ])
+  const [isSavingPlaylist, setIsSavingPlaylist] = useState(false)
+  const [searchResults, setSearchResults] = useState([])
   const [playlistName, setPlaylistName] = useState('New Playlist')
   const [tracklist, setTracklist] = useState([])
 
@@ -109,7 +88,6 @@ export default function GroovyApp() {
     setIsSearchLoading(true);
     try {
       const results = await spotifyFunctions.search(searchText, searchOption);
-      console.log(results)
       setSearchResults(results);
     } catch (err) {
       console.error(err);
@@ -135,12 +113,14 @@ export default function GroovyApp() {
     setTracklist(prev => prev.filter(e => e.id !== trackToRemove.id))
   }
 
-  const handleSavePlaylist = () => {
+  const handleSavePlaylist = async () => {
+    setIsSavingPlaylist(true);
     try {
-      spotifyFunctions.savePlaylist(playlistName, tracklist);
+      await spotifyFunctions.savePlaylist(playlistName, tracklist);
     } catch (err) {
       console.error(err);
     }
+    setIsSavingPlaylist(false);
   }
 
   return (
@@ -148,6 +128,7 @@ export default function GroovyApp() {
       ...{
         isAuthenticated,
         isSearchLoading,
+        isSavingPlaylist,
         searchText,
         handleSearchChange,
         searchOption,
