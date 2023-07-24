@@ -42,7 +42,7 @@ export default function GroovyApp() {
     const accessToken = localStorage.getItem('access_token');
     const refreshToken = localStorage.getItem('refresh_token');
     const accessTokenExpiry = parseInt(localStorage.getItem('access_token_expiry'));
-    const secondsUntilExpiry = (accessTokenExpiry - new Date().getTime()) / 1000;
+    let secondsUntilExpiry = (accessTokenExpiry - new Date().getTime()) / 1000;
 
     async function getToken() {
       setIsAuthenticated(null)
@@ -57,7 +57,7 @@ export default function GroovyApp() {
       }
     }
 
-    async function updateToken() {
+    async function renewToken() {
       setIsAuthenticated(null)
       try {
         await refreshAccessToken()
@@ -70,17 +70,27 @@ export default function GroovyApp() {
     if (accessToken && secondsUntilExpiry > 0) {
       console.log(`Found valid access token expiring in ${secondsUntilExpiry} seconds`)
       setIsAuthenticated(true)
-      // TODO: Set timeout to refresh token when it expires
     } else if (refreshToken) {
+      // Use stored refresh token to refresh access token
       console.log(`Found expired access token, refreshing...`)
-      updateToken()
+      renewToken()
+      secondsUntilExpiry = 3600
     } else if (code) {
       // Use authorization code to request access token
       console.log('Requesting access token')
       getToken()
+      secondsUntilExpiry = 3600
     } else {
       console.log('No local access token found')
       setIsAuthenticated(false)
+    }
+
+    // Set timeout to renew access token when it expires
+    if (secondsUntilExpiry) {
+      const timer = setTimeout(() => {
+        renewToken()
+      }, secondsUntilExpiry * 1000)
+      return () => clearTimeout(timer)
     }
 
   }, [])
