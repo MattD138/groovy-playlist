@@ -139,6 +139,7 @@ export default function GroovyApp() {
     <GroovyLayout {
       ...{
         isAuthenticated,
+        isSearchLoading,
         searchText,
         handleSearchChange,
         searchOption,

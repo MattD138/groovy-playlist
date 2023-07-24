@@ -16,7 +16,10 @@ export default function SearchSection(props) {
             searchOption={props.searchOption}
             handleChange={props.handleOptionChange}
           />
-          <SearchButton handleClick={props.handleSearch} />
+          <SearchButton
+            handleClick={props.handleSearch}
+            isLoading={props.isSearchLoading}
+          />
         </Flex>
       </Container>
     </Box>

@@ -19,11 +19,13 @@ export default function GroovyLayout(props) {
               searchOption={props.searchOption}
               handleOptionChange={props.handleOptionChange}
               handleSearch={props.handleSearch}
+              isSearchLoading={props.isSearchLoading}
             />
             <Stack direction={['column', 'row']} spacing='4'>
               <ResultsSection
                 searchResults={props.searchResults}
                 handleAddTrack={props.handleAddTrack}
+                isSearchLoading={props.isSearchLoading}
               />
               <PlaylistSection
                 playlistName={props.playlistName}

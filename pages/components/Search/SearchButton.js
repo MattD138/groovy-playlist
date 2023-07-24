@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 
-export default function SearchButton({ handleClick }) {
+export default function SearchButton({ handleClick, isLoading }) {
   return (
-    <Button onClick={handleClick}>Search</Button>
+    <Button isLoading={isLoading} onClick={handleClick}>Search</Button>
   )
 }
