@@ -135,6 +135,14 @@ export default function GroovyApp() {
     setTracklist(prev => prev.filter(e => e.id !== trackToRemove.id))
   }
 
+  const handleSavePlaylist = () => {
+    try {
+      spotifyFunctions.savePlaylist(playlistName, tracklist);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <GroovyLayout {
       ...{
@@ -150,7 +158,8 @@ export default function GroovyApp() {
         handlePlaylistNameChange,
         tracklist,
         handleAddTrack,
-        handleRemoveTrack
+        handleRemoveTrack,
+        handleSavePlaylist
       }
     } />
   )

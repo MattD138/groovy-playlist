@@ -21,7 +21,10 @@ export default function PlaylistSection(props) {
           />
         ))}
       </Stack>
-      <Button colorScheme='orange'>Save to Spotify</Button>
+      <Button
+        onClick={props.handleSavePlaylist}
+        colorScheme='orange'
+      >Save to Spotify</Button>
     </Stack>
   )
 }
