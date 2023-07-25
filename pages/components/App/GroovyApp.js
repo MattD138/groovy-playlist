@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import GroovyLayout from "./GroovyLayout"
-import { requestAccessToken } from "@/helpers/spotifyAuth"
+import { prepareAuth, requestAccessToken } from "@/helpers/spotifyAuth"
 import spotifyFunctions from "@/helpers/spotifyFunctions"
 
 export default function GroovyApp() {
@@ -9,10 +9,8 @@ export default function GroovyApp() {
   const [searchOption, setSearchOption] = useState('track')
   const [searchResults, setSearchResults] = useState([])
   const [isSearchLoading, setIsSearchLoading] = useState(false)
-  // const [isPlaylistSaving, setIsPlaylistSaving] = useState(false)
-  // const [playlistName, setPlaylistName] = useState('New Playlist')
-  // const [tracklist, setTracklist] = useState([])
   const [playlist, setPlaylist] = useState(null) // null when no playlist has been selected
+  const [playlists, setPlaylists] = useState(null) // null while loading
 
   // User may have been redirected to the app from Spotify auth flow
   // On load, check if the url contains 'code' query parameter
@@ -35,19 +33,23 @@ export default function GroovyApp() {
       }
     }
 
+    async function checkExistingAuth() {
+      setIsAuthenticated(null);
+      try {
+        const authSuccess = await prepareAuth();
+        setIsAuthenticated(authSuccess);
+      } catch (err) {
+        console.error(err);
+        setIsAuthenticated(false);
+      }
+    }
+
     if (code) {
       console.log('Requesting access token');
       getToken();
     } else {
       // Check local auth
-      const accessToken = localStorage.getItem('access_token');
-      const refreshToken = localStorage.getItem('refresh_token');
-      if (accessToken && refreshToken) {
-        // TODO: Use prepareAuth to refresh access token prior to rendering children
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
+      checkExistingAuth();
     }
   }, [])
 
