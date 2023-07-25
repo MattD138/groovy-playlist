@@ -31,6 +31,7 @@ export default function GroovyLayout(props) {
               <Stack w='100%'>
                 <PlaylistListSection
                   playlist={props.playlist}
+                  playlists={props.playlists}
                   handleLoadPlaylist={props.handleLoadPlaylist}
                 />
                 {props.playlist && (

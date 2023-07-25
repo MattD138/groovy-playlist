@@ -27,6 +27,7 @@ export default function GroovyApp() {
         setIsAuthenticated(true);
         // Remove Spotify's params from the window location
         window.history.replaceState(null, '', window.location.pathname);
+        getPlaylists();
       } catch (err) {
         console.error(err)
         setIsAuthenticated(false);
@@ -38,6 +39,9 @@ export default function GroovyApp() {
       try {
         const authSuccess = await prepareAuth();
         setIsAuthenticated(authSuccess);
+        if (authSuccess) {
+          getPlaylists();
+        }
       } catch (err) {
         console.error(err);
         setIsAuthenticated(false);
@@ -52,6 +56,12 @@ export default function GroovyApp() {
       checkExistingAuth();
     }
   }, [])
+
+  async function getPlaylists() {
+    setPlaylists(null);
+    const playlistData = await spotifyFunctions.getUserPlaylists();
+    setPlaylists(playlistData);
+  }
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value);
@@ -127,6 +137,7 @@ export default function GroovyApp() {
     setPlaylist(prev => ({ ...prev, isSaving: true }));
     try {
       await spotifyFunctions.savePlaylist(playlist.name, playlist.tracks, playlist.id);
+      getPlaylists();
     } catch (err) {
       console.error(err);
     }
@@ -142,6 +153,7 @@ export default function GroovyApp() {
         searchResults,
         isSearchLoading,
         playlist,
+        playlists,
         handleSearchChange,
         handleOptionChange,
         handleSearch,
