@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react"
 import GroovyLayout from "./GroovyLayout"
-import { requestAccessToken, refreshAccessToken } from "@/helpers/spotifyAuth"
+import { requestAccessToken } from "@/helpers/spotifyAuth"
 import spotifyFunctions from "@/helpers/spotifyFunctions"
 
 export default function GroovyApp() {
   const [isAuthenticated, setIsAuthenticated] = useState(null) // null if loading
   const [searchText, setSearchText] = useState('')
   const [searchOption, setSearchOption] = useState('track')
-  const [isSearchLoading, setIsSearchLoading] = useState(false)
-  const [isSavingPlaylist, setIsSavingPlaylist] = useState(false)
   const [searchResults, setSearchResults] = useState([])
-  const [playlistName, setPlaylistName] = useState('New Playlist')
-  const [tracklist, setTracklist] = useState([])
+  const [isSearchLoading, setIsSearchLoading] = useState(false)
+  // const [isPlaylistSaving, setIsPlaylistSaving] = useState(false)
+  // const [playlistName, setPlaylistName] = useState('New Playlist')
+  // const [tracklist, setTracklist] = useState([])
+  const [playlist, setPlaylist] = useState(null) // null when no playlist has been selected
 
   // User may have been redirected to the app from Spotify auth flow
   // On load, check if the url contains 'code' query parameter
@@ -35,13 +36,14 @@ export default function GroovyApp() {
     }
 
     if (code) {
-      console.log('Requesting access token')
+      console.log('Requesting access token');
       getToken();
     } else {
       // Check local auth
       const accessToken = localStorage.getItem('access_token');
       const refreshToken = localStorage.getItem('refresh_token');
       if (accessToken && refreshToken) {
+        // TODO: Use prepareAuth to refresh access token prior to rendering children
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
@@ -50,11 +52,11 @@ export default function GroovyApp() {
   }, [])
 
   const handleSearchChange = (e) => {
-    setSearchText(e.target.value)
+    setSearchText(e.target.value);
   }
 
   const handleOptionChange = (newOption) => {
-    setSearchOption(newOption)
+    setSearchOption(newOption);
   }
 
   const handleSearch = async () => {
@@ -65,52 +67,84 @@ export default function GroovyApp() {
     } catch (err) {
       console.error(err);
     }
-    setIsSearchLoading(false)
+    setIsSearchLoading(false);
+  }
+
+  const handleLoadPlaylist = async (id, name) => {
+    if (id === 'new') {
+      setPlaylist({
+        id: null,
+        name: 'New Playlist',
+        tracks: [],
+        isLoading: false,
+        isSaving: false
+      });
+    } else if (id === '') {
+      setPlaylist(null);
+    } else {
+      // Fetch playlist contents from Spotify
+      console.log('Loading playlist ' + id);
+      setPlaylist({
+        id: id,
+        name: name,
+        isLoading: true
+      });
+      try {
+        const tracks = await spotifyFunctions.getPlaylist(id);
+        setPlaylist(prev => ({
+          ...prev,
+          tracks: tracks,
+          isLoading: false
+        }))
+      } catch (err) {
+        console.error(err);
+        setPlaylist(null);
+      }
+    }
   }
 
   const handlePlaylistNameChange = (newPlaylistName) => {
-    setPlaylistName(newPlaylistName)
+    setPlaylist(prev => ({ ...prev, name: newPlaylistName }))
   }
 
   const handleAddTrack = (newTrack) => {
     // Add track if it does not exist in playlist
-    if (tracklist.find(e => e.id === newTrack.id)) {
-      alert('Track already in playlist')
+    if (playlist.tracks.find(e => e.id === newTrack.id)) {
+      alert('Track already in playlist');
     } else {
-      setTracklist(prev => [...prev, newTrack])
+      setPlaylist(prev => ({ ...prev, tracks: [...prev.tracks, newTrack] }));
     }
   }
 
   const handleRemoveTrack = (trackToRemove) => {
     // Remove given track from the tracklist state
-    setTracklist(prev => prev.filter(e => e.id !== trackToRemove.id))
+    setPlaylist(prev => ({ ...prev, tracks: prev.tracks.filter(e => e.id !== trackToRemove.id) }));
   }
 
   const handleSavePlaylist = async () => {
-    setIsSavingPlaylist(true);
+    setPlaylist(prev => ({ ...prev, isSaving: true }));
     try {
-      await spotifyFunctions.savePlaylist(playlistName, tracklist);
+      await spotifyFunctions.savePlaylist(playlist.name, playlist.tracks, playlist.id);
     } catch (err) {
       console.error(err);
     }
-    setIsSavingPlaylist(false);
+    setPlaylist(prev => ({ ...prev, isSaving: false }));
   }
 
   return (
     <GroovyLayout {
       ...{
         isAuthenticated,
-        isSearchLoading,
-        isSavingPlaylist,
         searchText,
-        handleSearchChange,
         searchOption,
+        searchResults,
+        isSearchLoading,
+        playlist,
+        handleSearchChange,
         handleOptionChange,
         handleSearch,
-        searchResults,
-        playlistName,
+        handleLoadPlaylist,
         handlePlaylistNameChange,
-        tracklist,
         handleAddTrack,
         handleRemoveTrack,
         handleSavePlaylist

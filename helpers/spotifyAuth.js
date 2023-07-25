@@ -8,7 +8,7 @@ export function requestAuthCode() {
 
   generateCodeChallenge(codeVerifier).then(codeChallenge => {
     let state = generateRandomString(16);
-    let scope = 'user-read-private user-read-email playlist-read-private playlist-modify-private';
+    let scope = 'playlist-read-private playlist-modify-public playlist-modify-private';
 
     localStorage.setItem('code_verifier', codeVerifier);
 

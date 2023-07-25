@@ -4,6 +4,7 @@ import AppLoading from './AppLoading'
 import Login from './Login'
 import SearchSection from '../Search/SearchSection'
 import ResultsSection from '../Results/ResultsSection'
+import PlaylistListSection from '../PlaylistList/PlaylistListSection'
 import PlaylistSection from '../Playlist/PlaylistSection'
 
 export default function GroovyLayout(props) {
@@ -27,14 +28,21 @@ export default function GroovyLayout(props) {
                 handleAddTrack={props.handleAddTrack}
                 isSearchLoading={props.isSearchLoading}
               />
-              <PlaylistSection
-                playlistName={props.playlistName}
-                handlePlaylistNameChange={props.handlePlaylistNameChange}
-                tracklist={props.tracklist}
-                handleRemoveTrack={props.handleRemoveTrack}
-                handleSavePlaylist={props.handleSavePlaylist}
-                isSavingPlaylist={props.isSavingPlaylist}
-              />
+              <Stack w='100%'>
+                <PlaylistListSection
+                  playlist={props.playlist}
+                  handleLoadPlaylist={props.handleLoadPlaylist}
+                />
+                {props.playlist && (
+                  <PlaylistSection
+                    playlist={props.playlist}
+                    handlePlaylistNameChange={props.handlePlaylistNameChange}
+                    handleRemoveTrack={props.handleRemoveTrack}
+                    handleSavePlaylist={props.handleSavePlaylist}
+                  />
+                )}
+              </Stack>
+
             </Stack>
           </Stack>
         ) : props.isAuthenticated === false ? (
