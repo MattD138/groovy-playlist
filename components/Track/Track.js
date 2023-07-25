@@ -1,5 +1,4 @@
-import { Box, Card, Flex, Heading, IconButton, Stack, Text } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { Box, Card, Flex, Heading, Text } from "@chakra-ui/react";
 
 export default function Track({ actionButton, name, artists, album }) {
   return (

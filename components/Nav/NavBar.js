@@ -1,4 +1,4 @@
-import { Box, Flex, Container, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 
 export default function NavBar() {
   return (

@@ -1,4 +1,4 @@
-import { Center, Heading, Spinner, Stack } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import Track from "../Track/Track";
 import AddTrackButton from "../Track/AddTrackButton";
 import Loading from "../App/Loading";

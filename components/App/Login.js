@@ -1,4 +1,4 @@
-import { Box, Button, Center, Heading, Stack, Text } from "@chakra-ui/react"
+import { Box, Button, Heading, Stack, Text } from "@chakra-ui/react"
 import { requestAuthCode } from "@/helpers/spotifyAuth"
 
 export default function Login() {

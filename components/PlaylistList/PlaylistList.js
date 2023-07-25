@@ -1,20 +1,7 @@
-import { useState, useEffect } from "react";
 import { Select } from "@chakra-ui/react";
-import { getUserPlaylists } from "@/helpers/spotifyFunctions";
 import Loading from "../App/Loading";
 
 export default function PlaylistList({ playlist, playlists, handleLoadPlaylist }) {
-  // const [playlists, setPlaylists] = useState(null); // null while loading
-
-  // useEffect(() => {
-  //   async function getPlaylists() {
-  //     const playlistData = await getUserPlaylists();
-  //     setPlaylists(playlistData);
-  //   }
-
-  //   getPlaylists();
-  // }, [])
-
   const handleChange = (e) => {
     const id = e.target.value;
     const currentPlaylist = playlists.find(p => p.id === id);
